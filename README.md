@@ -15,31 +15,51 @@ Probado de punta a punta en un **Samsung Galaxy A56 5G** (Android 16, Exynos 158
 ## Automático (recomendado)
 
 ```bash
-pkg install git unrar python -y
+pkg install git unrar python curl -y
 git clone https://github.com/xozan845-ctrl/bo2-android-guide.git
 cd bo2-android-guide
+
+# opción A: ya tienes los RAR en Descargas
 bash tools/setup_bo2.sh
+
+# opción B: que además los descargue de tus enlaces
+bash tools/setup_bo2.sh --lista enlaces.txt
 ```
+
+`enlaces.txt` = un enlace por línea (MediaFire, Google Drive directo, HTTP…). Parte de `enlaces.txt.example`:
+
+```bash
+cp enlaces.txt.example enlaces.txt
+nano enlaces.txt     # pega tus 2 enlaces, uno por línea
+```
+
+> Este repo **no publica** enlaces de descarga de datos del juego (son contenido con copyright). Usa enlaces de **tu propio respaldo**. El APK, en cambio, sí se descarga solo desde los releases oficiales.
 
 El script:
 
-1. **Busca** los `.part1.rar` / `.part2.rar` (o `.r01`, o un `.rar` único) en `Download`, `~/storage/downloads`, `/sdcard` y `/storage/emulated/0`.
-2. Comprueba que estén las dos partes y que haya **espacio libre** suficiente.
-3. **Extrae** con `unrar`, verificando CRC de todo el archivo (`All OK`).
-4. **Localiza** la carpeta `415608C3` y valida la estructura (`00007000`, 47 fragmentos, `000B0000`).
-5. **Verifica el TU18** por SHA-256 del `default_mp.xexp` contra los hashes que acepta el port.
-6. Detecta el **APK** en Descargas y opcionalmente abre el instalador.
-7. Te imprime la **ruta exacta** que debes elegir dentro de la app.
+1. **Descarga** los enlaces que le des (resuelve páginas de MediaFire, reanuda con `-C -`, reintenta 3 veces) y detecta el APK oficial más reciente en GitHub.
+2. **Busca** `.part1.rar` / `.part2.rar` (o `.r01`, o un `.rar` único) en Descargas, `~/storage/downloads`, `/sdcard` y `/storage/emulated/0`.
+3. Comprueba las partes y que haya **espacio libre** suficiente.
+4. **Extrae** con `unrar`, verificando CRC de todo el archivo (`All OK`).
+5. **Localiza** `415608C3` y valida la estructura (`00007000`, 47 fragmentos, `000B0000`, DLC).
+6. **Verifica el TU18** por SHA-256 del `default_mp.xexp`.
+7. **Descarga el APK** oficial y abre el instalador.
+8. Imprime la **ruta exacta** que debes elegir dentro de la app.
 
 Opciones:
 
 ```bash
 bash tools/setup_bo2.sh --help
+bash tools/setup_bo2.sh --lista enlaces.txt        # descarga tus enlaces
+bash tools/setup_bo2.sh --url URL1 --url URL2      # enlaces sueltos
+bash tools/setup_bo2.sh --descargar-apk            # solo asegurar el APK
+bash tools/setup_bo2.sh --dir-descargas /sdcard/Download
 bash tools/setup_bo2.sh --dest /sdcard/Games/BO2   # otra carpeta destino
 bash tools/setup_bo2.sh --src /sdcard/Download     # buscar solo ahí
 bash tools/setup_bo2.sh --force                    # re-extraer aunque ya exista
-bash tools/setup_bo2.sh --no-apk                   # no ofrecer instalar el APK
-bash tools/setup_bo2.sh --yes                      # sin preguntas
+bash tools/setup_bo2.sh --no-apk                   # sin APK
+bash tools/setup_bo2.sh --yes                      # sin preguntas (no abre el instalador)
+bash tools/setup_bo2.sh --instalar                 # abre el instalador del APK
 ```
 
 ---

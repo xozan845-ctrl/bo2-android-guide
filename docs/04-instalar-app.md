@@ -3,8 +3,18 @@
 ## 1. Descargar el APK (solo oficial)
 
 - Releases: https://github.com/spartansprm/BO2-Android-xbox360/releases
-- Para ARM64 elige **`BO2-v0.63.2-armv8.0.apk`** (el `BO2-v0.63.2.apk` es un universal, también sirve).
+- Para ARM64 elige **`BO2-vX.Y.Z-armv8.0.apk`** (el `.apk` universal también sirve).
 - Paquete: `org.bo2port.diagnostic`
+
+**Automático:**
+
+```bash
+bash tools/setup_bo2.sh --descargar-apk
+```
+
+Consulta la API de GitHub, baja el asset `armv8` del **último release** a Descargas y ofrece abrirlo.
+
+> Esta guía se escribió con la **0.63.2**; el script siempre trae la más reciente (al momento de actualizar: 0.64.0).
 
 No lo bajes de blogs, grupos de Telegram o "páginas de APK": es donde meten malware.
 

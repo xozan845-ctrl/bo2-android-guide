@@ -3,10 +3,26 @@
 ## 0. Automático (script del repo)
 
 ```bash
-bash tools/setup_bo2.sh
+bash tools/setup_bo2.sh                                  # usa los RAR de Descargas
+bash tools/setup_bo2.sh --lista enlaces.txt              # además los descarga
+bash tools/setup_bo2.sh --descargar-apk                  # baja el APK oficial
 ```
 
-Hace todo lo de esta página: busca las partes, comprueba espacio, extrae con CRC, valida la estructura y verifica el TU18. Las secciones siguientes son el equivalente manual (útil si algo falla).
+Hace todo lo de esta página: resuelve/descarga enlaces de MediaFire o HTTP, busca las partes, comprueba espacio, extrae con CRC, valida la estructura y verifica el TU18. Las secciones siguientes son el equivalente manual (útil si algo falla).
+
+### Descargas soportadas
+
+| Tipo | Cómo |
+|---|---|
+| MediaFire (página `/file/...`) | El script extrae el enlace directo `download###.mediafire.com` |
+| HTTP/HTTPS directo | Se pasa tal cual a `curl -C -` |
+| APK del port | Se consulta la API de GitHub y baja el asset `armv8` del último release |
+
+Notas:
+
+- `curl -C -` reanuda descargas cortadas: si se cae el WiFi, vuelve a ejecutar y continúa.
+- Si MediaFire muestra captcha o cambia el HTML, el script avisa y puedes bajar el archivo a mano a `Download` (el resto sigue igual).
+- No se descargan datos del juego si no los indicas con `--url`/`--lista` (el repo no publica enlaces).
 
 ## 1. Los RAR multi-volumen no se "unen"
 
