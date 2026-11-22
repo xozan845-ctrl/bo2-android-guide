@@ -1,0 +1,21 @@
+{
+  "id": "nfsu1",
+  "name": "Need for Speed: Underground (2003)",
+  "source": "PC (tu instalación original)",
+  "repo": "codepdbh/nfsu1-recompiled",
+  "asset": "arm64",
+  "asset_exclude": "armeabi",
+  "package": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 6,
+  "verified": false,
+  "data": {
+    "mode": "app-import",
+    "hint": "Copia la carpeta del juego de PC al teléfono y selecciónala en la app.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "Recompilado nativo (sin emulador). Verifica SHA256SUMS del release."
+}

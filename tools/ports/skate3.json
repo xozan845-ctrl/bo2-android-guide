@@ -1,0 +1,21 @@
+{
+  "id": "skate3",
+  "name": "Skate 3",
+  "source": "Xbox 360 (tu disco)",
+  "repo": "darchap/Skate3-Port",
+  "asset": ".apk",
+  "asset_exclude": "",
+  "package": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 10,
+  "verified": false,
+  "data": {
+    "mode": "app-import",
+    "hint": "Copia los archivos del juego al teléfono y selecciónalos en la app.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "Port ARM64 sin emulación. Snapdragon 8 Gen 2+ recomendado."
+}

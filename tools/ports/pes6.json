@@ -1,0 +1,21 @@
+{
+  "id": "pes6",
+  "name": "Pro Evolution Soccer 6 (PSP)",
+  "source": "PSP (tu ISO)",
+  "repo": "haveniiii/PES6ANDROIDPORT",
+  "asset": ".apk",
+  "asset_exclude": "",
+  "package": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 3,
+  "verified": false,
+  "data": {
+    "mode": "app-import",
+    "hint": "Copia tu ISO de PES6 (PSP) al teléfono y elígela en la app.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "APK grande (~420 MB). Incluye liga chilena 2026."
+}

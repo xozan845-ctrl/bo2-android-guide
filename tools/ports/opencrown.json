@@ -1,0 +1,21 @@
+{
+  "id": "opencrown",
+  "name": "Dragon's Crown (OpenCrown Mobile)",
+  "source": "PS Vita/PS4 (tu dump descifrado)",
+  "repo": "Nezara/OpenCrown-PC",
+  "asset": "OpenCrownMobile",
+  "asset_exclude": "",
+  "package": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 4,
+  "verified": false,
+  "data": {
+    "mode": "folder",
+    "hint": "Dos carpetas: juego base (con eboot.bin descifrado) y update 1.09. El lanzador revisa que estén completas.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "El release trae APK móvil además del PC. Solo update 1.09."
+}

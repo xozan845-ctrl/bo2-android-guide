@@ -1,0 +1,25 @@
+{
+  "id": "bo2",
+  "name": "Call of Duty: Black Ops II (Zombies/Campaña)",
+  "source": "Xbox 360 (GOD o ISO)",
+  "repo": "spartansprm/BO2-Android-xbox360",
+  "asset": "armv8",
+  "asset_exclude": "",
+  "package": "org.bo2port.diagnostic",
+  "arch": "arm64",
+  "min_android": 9,
+  "space_gb": 18,
+  "verified": true,
+  "data": {
+    "mode": "folder",
+    "hint": "Copia tu 415608C3 (00007000 + 000B0000 + 00000002) o pon el .iso junto al TU18.",
+    "dest": "/storage/emulated/0/Games/BO2",
+    "layout": [
+      { "path": "415608C3/00007000", "type": "dir", "min_files": 40, "desc": "Juego GOD (cabecera + fragmentos)" },
+      { "path": "415608C3/000B0000", "type": "dir", "min_files": 1, "desc": "Title Update 18" },
+      { "path": "415608C3/00000002", "type": "dir", "min_files": 0, "desc": "DLC (opcional)" }
+    ],
+    "verify": { "tool": "tu18", "path": "415608C3/000B0000" }
+  },
+  "notes": "Beta con Vulkan. Requiere TU18 (se verifica por SHA-256). DLC opcional, máx. 32 paquetes."
+}

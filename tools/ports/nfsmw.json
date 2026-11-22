@@ -1,0 +1,21 @@
+{
+  "id": "nfsmw",
+  "name": "Need for Speed: Most Wanted (2005)",
+  "source": "Xbox 360 (tu copia PAL)",
+  "repo": "codepdbh/nfsmw-android",
+  "asset": "arm64",
+  "asset_exclude": "armeabi",
+  "package": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 8,
+  "verified": false,
+  "data": {
+    "mode": "app-import",
+    "hint": "La app importa tu copia desde su menú (carpeta/ISO). Ten el juego descomprimido en el teléfono.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "Recompilación ReXGlue + Vulkan. Publica SHA256SUMS: el instalador verifica el APK si está."
+}

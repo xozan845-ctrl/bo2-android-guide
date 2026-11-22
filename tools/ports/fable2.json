@@ -1,0 +1,21 @@
+{
+  "id": "fable2",
+  "name": "Fable II",
+  "source": "Xbox 360 (ISO/carpeta de tu disco)",
+  "repo": "hardsilinder/FableDroid",
+  "asset": ".apk",
+  "asset_exclude": "",
+  "package": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 12,
+  "verified": false,
+  "data": {
+    "mode": "app-import",
+    "hint": "FableDroid incluye instalador de ISO en el propio teléfono: elige tu ISO/carpeta desde la app.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "Alpha activa. ReXGlue + Vulkan. Recomendado Adreno + Turnip."
+}

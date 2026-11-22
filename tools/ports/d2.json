@@ -1,0 +1,21 @@
+{
+  "id": "d2",
+  "name": "Diablo II: Lord of Destruction 1.13d",
+  "source": "PC (tus claves o tu carpeta 1.13d)",
+  "repo": "N1v0k/D2Android-Releases",
+  "asset": ".apk",
+  "asset_exclude": "source",
+  "package": "",
+  "arch": "arm64",
+  "min_android": 8,
+  "space_gb": 6,
+  "verified": false,
+  "data": {
+    "mode": "app-download",
+    "hint": "Sin PC: la app baja los instaladores oficiales de Blizzard y tú escribes tus claves. Con PC: copia tu carpeta 1.13d y elígela.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "Único de la lista que puede obtener el juego de forma oficial desde el propio teléfono (requiere compra)."
+}

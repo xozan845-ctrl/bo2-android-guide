@@ -1,0 +1,21 @@
+{
+  "id": "gow2",
+  "name": "Gears of War 2",
+  "source": "Xbox 360 (tu disco)",
+  "repo": "santiquiroz/gears-of-war-2-pc-port",
+  "asset": "android-arm64",
+  "asset_exclude": "",
+  "package": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 14,
+  "verified": false,
+  "data": {
+    "mode": "app-import",
+    "hint": "APK experimental adjunto a cada release. Necesitas los archivos de tu copia.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "Publica .sha256 del APK: se verifica automáticamente."
+}

@@ -104,6 +104,33 @@ Estructura esperada:
 | [docs/04-instalar-app.md](docs/04-instalar-app.md) | APK oficial, instalación y elección de carpeta |
 | [docs/05-configuracion.md](docs/05-configuracion.md) | Ajustes recomendados y rendimiento por dispositivo |
 | [docs/06-problemas.md](docs/06-problemas.md) | Errores típicos y solución |
+| [docs/07-catalogo-ports.md](docs/07-catalogo-ports.md) | **Otros juegos**: catálogo de ports y cómo añadir uno |
+
+## Otros juegos (instalador universal)
+
+La herramienta no es exclusiva de BO2: es un catálogo de manifiestos con un motor común.
+
+```bash
+python3 tools/port.py list            # 10 ports disponibles
+python3 tools/port.py info nfsmw      # requisitos y datos que necesita
+python3 tools/port.py install nfsmw   # descarga APK, verifica SHA-256 e instala
+python3 tools/port.py install bo2     # BO2 completo (datos + TU18 + APK)
+```
+
+| ID | Juego | Origen de tus datos |
+|---|---|---|
+| `bo2` | Black Ops II | Xbox 360 GOD/ISO + TU18 |
+| `nfsmw` | NFS Most Wanted (2005) | Xbox 360 |
+| `nfsu1` | NFS Underground (2003) | PC |
+| `fable2` | Fable II | Xbox 360 |
+| `skate3` | Skate 3 | Xbox 360 |
+| `gow2` | Gears of War 2 | Xbox 360 |
+| `unleashed` | Sonic Unleashed | Xbox 360 |
+| `d2` | Diablo II LoD | PC (claves propias) |
+| `opencrown` | Dragon's Crown | PS Vita/PS4 |
+| `pes6` | PES 6 | PSP ISO |
+
+Ver [docs/07-catalogo-ports.md](docs/07-catalogo-ports.md) para el detalle, el esquema de manifiestos y cómo añadir un juego nuevo.
 
 ## La app (oficial)
 
@@ -135,5 +162,6 @@ Si tu TU no da ninguno de esos dos, **no es TU18** y el port se negará a arranc
 ## Licencia
 
 - Documentación y scripts de instalación: **MIT** (ver `LICENSE`)
+- `tools/port.py`: **MIT** (manifiestos de terceros: cada repo conserva su licencia)
 - `tools/verificar_tu18.py`: **GPL-3.0** (port del lector STFS de `StfsPatchVerifier` del proyecto BO2-Android-xbox360)
 - Call of Duty / Black Ops II son marcas de Activision. Este repo no está afiliado a Activision, Microsoft ni Google.

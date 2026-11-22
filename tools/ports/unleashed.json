@@ -1,0 +1,21 @@
+{
+  "id": "unleashed",
+  "name": "Sonic Unleashed (Unleashed Recompiled)",
+  "source": "Xbox 360 (tu copia)",
+  "repo": "SansNope/UnleashedRecomp-Android",
+  "asset": ".apk",
+  "asset_exclude": "",
+  "package": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 12,
+  "verified": false,
+  "data": {
+    "mode": "app-import",
+    "hint": "La app carga los datos extraídos de tu copia; selecciona la carpeta en el menú.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "Capa Android del proyecto Unleashed Recompiled. Snapdragon 8 Gen 2+ con Turnip."
+}
