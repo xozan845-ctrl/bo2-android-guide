@@ -1,0 +1,32 @@
+{
+  "id": "gta4",
+  "name": "GTA IV: Liberty Recompiled (MidRange)",
+  "source": "Xbox 360 (tu copia)",
+  "repo": "emmahiguita/LibertyRecomp-MidRange-Edition",
+  "asset": "mali",
+  "asset_exclude": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 16,
+  "data": {
+    "mode": "app-import",
+    "hint": "Recompilación estática de GTA IV optimizada para GPUs Mali (gama media). Importa tu copia desde la app.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "Variante 'midrange' de LibertyRecomp, pensada para Mali/Xclipse; también existe la versión Adreno/Turnip.",
+  "verification": {
+    "level": "apk",
+    "device": "Samsung Galaxy A56 5G (SM-A566E) · Android 16 · Exynos 1580 (s5e8855) · Xclipse 540 · arm64-v8a · 8 GB RAM",
+    "date": "2026-11-22",
+    "apk": "LibertyRecompAndroid-v0.5.9-mali-fixed.apk",
+    "version": "0.5.9",
+    "sha256": "3085534bd9c52112e7bcfbdd6fa3eb7238ce77d7ec5c73b8501da170f47e5fb1",
+    "package": "com.libertyrecomp",
+    "min_sdk": 29,
+    "native_code": "arm64-v8a",
+    "release": "v0.5.8-midrange",
+    "note": "APK descargado, integridad y metadatos comprobados. No se probó el arranque del juego (faltan datos en este dispositivo)."
+  }
+}

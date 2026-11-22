@@ -9,7 +9,6 @@
   "arch": "arm64",
   "min_android": 10,
   "space_gb": 4,
-  "verified": false,
   "data": {
     "mode": "folder",
     "hint": "Dos carpetas: juego base (con eboot.bin descifrado) y update 1.09. El lanzador revisa que estén completas.",
@@ -17,5 +16,18 @@
     "layout": [],
     "verify": null
   },
-  "notes": "El release trae APK móvil además del PC. Solo update 1.09."
+  "notes": "El release trae APK móvil además del PC. Solo update 1.09.",
+  "verification": {
+    "level": "apk",
+    "device": "Samsung Galaxy A56 5G (SM-A566E) · Android 16 · Exynos 1580 (s5e8855) · Xclipse 540 · arm64-v8a · 8 GB RAM",
+    "date": "2026-11-22",
+    "apk": "OpenCrownMobile-v1.9.4-beta-arm64.apk",
+    "version": "1.9.4",
+    "sha256": "a7ddc68342f33633d2aa0a3c455d522641f17dde265326aa5c55ec1725c916ff",
+    "package": "org.opencrown.mobile",
+    "min_sdk": 28,
+    "native_code": "arm64-v8a",
+    "release": "v1.2",
+    "note": "APK descargado, integridad y metadatos comprobados. No se probó el arranque del juego (faltan datos en este dispositivo)."
+  }
 }

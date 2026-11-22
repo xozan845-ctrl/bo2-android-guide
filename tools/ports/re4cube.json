@@ -1,0 +1,19 @@
+{
+  "id": "re4cube",
+  "name": "Resident Evil 4 (CubeEvil4, GameCube)",
+  "source": "GameCube (tu ISO)",
+  "repo": "manuk-bulan/Manuk-CubeEvil4-Android",
+  "asset": ".apk",
+  "asset_exclude": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 8,
+  "data": {
+    "mode": "app-import",
+    "hint": "Port nativo basado en la decompilación de RE4 de GameCube. Copia tu ISO y elígela en la app.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "Build modificado de CubeEvil4 (Andiweli). Versión 0.0.1, muy temprana."
+}

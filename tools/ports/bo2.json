@@ -9,17 +9,47 @@
   "arch": "arm64",
   "min_android": 9,
   "space_gb": 18,
-  "verified": true,
   "data": {
     "mode": "folder",
     "hint": "Copia tu 415608C3 (00007000 + 000B0000 + 00000002) o pon el .iso junto al TU18.",
     "dest": "/storage/emulated/0/Games/BO2",
     "layout": [
-      { "path": "415608C3/00007000", "type": "dir", "min_files": 40, "desc": "Juego GOD (cabecera + fragmentos)" },
-      { "path": "415608C3/000B0000", "type": "dir", "min_files": 1, "desc": "Title Update 18" },
-      { "path": "415608C3/00000002", "type": "dir", "min_files": 0, "desc": "DLC (opcional)" }
+      {
+        "path": "415608C3/00007000",
+        "type": "dir",
+        "min_files": 40,
+        "desc": "Juego GOD (cabecera + fragmentos)"
+      },
+      {
+        "path": "415608C3/000B0000",
+        "type": "dir",
+        "min_files": 1,
+        "desc": "Title Update 18"
+      },
+      {
+        "path": "415608C3/00000002",
+        "type": "dir",
+        "min_files": 0,
+        "desc": "DLC (opcional)"
+      }
     ],
-    "verify": { "tool": "tu18", "path": "415608C3/000B0000" }
+    "verify": {
+      "tool": "tu18",
+      "path": "415608C3/000B0000"
+    }
   },
-  "notes": "Beta con Vulkan. Requiere TU18 (se verifica por SHA-256). DLC opcional, máx. 32 paquetes."
+  "notes": "Beta con Vulkan. Requiere TU18 (se verifica por SHA-256). DLC opcional, máx. 32 paquetes.",
+  "verification": {
+    "level": "datos",
+    "device": "Samsung Galaxy A56 5G (SM-A566E) · Android 16 · Exynos 1580 (s5e8855) · Xclipse 540 · arm64-v8a · 8 GB RAM",
+    "date": "2026-11-22",
+    "apk": "BO2-v0.64.0-armv8.0.apk",
+    "version": "0.64.0-armv8.0",
+    "sha256": "713b8a48f53ee758d2cb72dff7fdbed9dde91c592fdfb15c45fe64494da40e06",
+    "package": "org.bo2port.diagnostic.scenesync",
+    "min_sdk": 28,
+    "native_code": "arm64-v8a",
+    "release": "V0.64.0",
+    "note": "Datos de 16 GB extraídos con CRC OK, TU18 validado por SHA-256 y APK 0.64.0 descargado/inspeccionado. No se probó el arranque del juego en este dispositivo."
+  }
 }

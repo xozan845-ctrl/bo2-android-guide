@@ -9,7 +9,6 @@
   "arch": "arm64",
   "min_android": 10,
   "space_gb": 8,
-  "verified": false,
   "data": {
     "mode": "app-import",
     "hint": "La app importa tu copia desde su menú (carpeta/ISO). Ten el juego descomprimido en el teléfono.",
@@ -17,5 +16,18 @@
     "layout": [],
     "verify": null
   },
-  "notes": "Recompilación ReXGlue + Vulkan. Publica SHA256SUMS: el instalador verifica el APK si está."
+  "notes": "Recompilación ReXGlue + Vulkan. Publica SHA256SUMS: el instalador verifica el APK si está.",
+  "verification": {
+    "level": "apk",
+    "device": "Samsung Galaxy A56 5G (SM-A566E) · Android 16 · Exynos 1580 (s5e8855) · Xclipse 540 · arm64-v8a · 8 GB RAM",
+    "date": "2026-11-22",
+    "apk": "NFSMW-Android-Evolved-v0.8.2-arm64.apk",
+    "version": "0.8.2",
+    "sha256": "e691e2bb6685f7bf44a1a36d91c2dcad69ed9260daed5a4b24ab1fb43dbb3cd4",
+    "package": "com.nfsmw.android",
+    "min_sdk": 26,
+    "native_code": "arm64-v8a",
+    "release": "v0.8.2",
+    "note": "APK descargado, integridad y metadatos comprobados. No se probó el arranque del juego (faltan datos en este dispositivo)."
+  }
 }

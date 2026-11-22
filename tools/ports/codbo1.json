@@ -1,0 +1,32 @@
+{
+  "id": "codbo1",
+  "name": "Call of Duty: Black Ops Zombies",
+  "source": "Tu copia (APK+OBB o ISO)",
+  "repo": "Joolace/T5-Jool---Black-Ops-Recomp",
+  "asset": "arm64-v8.2",
+  "asset_exclude": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 6,
+  "data": {
+    "mode": "app-import",
+    "hint": "Port nativo del motor de Zombies (T5). Importa los datos de tu copia desde la app.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "Alpha v0.5. Publica APK genérico arm64 y otro arm64-v8.2 (mejor en SoC modernos). Soporta LAN co-op.",
+  "verification": {
+    "level": "apk",
+    "device": "Samsung Galaxy A56 5G (SM-A566E) · Android 16 · Exynos 1580 (s5e8855) · Xclipse 540 · arm64-v8a · 8 GB RAM",
+    "date": "2026-11-22",
+    "apk": "T5Jool-v0.5-alpha-arm64-v8.2.apk",
+    "version": "0.5-alpha",
+    "sha256": "851aa29c59cae2255f32b92fbdb3339fdd86a162c32c437a22b9eb9e2c67135e",
+    "package": "com.joolace.t5jool",
+    "min_sdk": 29,
+    "native_code": "arm64-v8a",
+    "release": "alpha-v0.5",
+    "note": "APK descargado, integridad y metadatos comprobados. No se probó el arranque del juego (faltan datos en este dispositivo)."
+  }
+}

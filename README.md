@@ -117,20 +117,23 @@ python3 tools/port.py install nfsmw   # descarga APK, verifica SHA-256 e instala
 python3 tools/port.py install bo2     # BO2 completo (datos + TU18 + APK)
 ```
 
-| ID | Juego | Origen de tus datos |
-|---|---|---|
-| `bo2` | Black Ops II | Xbox 360 GOD/ISO + TU18 |
-| `nfsmw` | NFS Most Wanted (2005) | Xbox 360 |
-| `nfsu1` | NFS Underground (2003) | PC |
-| `fable2` | Fable II | Xbox 360 |
-| `skate3` | Skate 3 | Xbox 360 |
-| `gow2` | Gears of War 2 | Xbox 360 |
-| `unleashed` | Sonic Unleashed | Xbox 360 |
-| `d2` | Diablo II LoD | PC (claves propias) |
-| `opencrown` | Dragon's Crown | PS Vita/PS4 |
-| `pes6` | PES 6 | PSP ISO |
+| Saga | Ports incluidos |
+|---|---|
+| **Call of Duty** | `bo2`, `codbo1`, `mw2`, `mw3` |
+| **GTA** | `gta4`, `gta5` |
+| **Resident Evil** | `re4wii`, `re4cube` |
+| **FIFA** | `fifastreet12` |
+| Otros | `nfsmw`, `nfsu1`, `fable2`, `skate3`, `gow2`, `unleashed`, `d2`, `opencrown`, `pes6` |
 
-Ver [docs/07-catalogo-ports.md](docs/07-catalogo-ports.md) para el detalle, el esquema de manifiestos y cómo añadir un juego nuevo.
+Verificación hecha en **Samsung Galaxy A56 5G (SM-A566E) · Android 16 · Exynos 1580 · Xclipse 540 · arm64-v8a**:
+10 ports con APK verificado (hash + metadatos) y BO2 con datos/TU18 validados. Ver
+[docs/07-catalogo-ports.md](docs/07-catalogo-ports.md) para la tabla completa, la cobertura por saga
+(qué juegos **no** tienen port nativo) y cómo añadir uno nuevo.
+
+```bash
+python3 tools/port.py probar gta4                        # verifica un APK y marca el manifiesto
+python3 tools/port.py nuevo https://github.com/user/repo  # genera el manifiesto desde el repo
+```
 
 ## La app (oficial)
 

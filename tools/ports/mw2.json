@@ -1,0 +1,32 @@
+{
+  "id": "mw2",
+  "name": "Call of Duty: Modern Warfare 2 (2009)",
+  "source": "Xbox 360 (tu disco)",
+  "repo": "yassinsolim/mw2-recomp",
+  "asset": ".apk",
+  "asset_exclude": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 14,
+  "data": {
+    "mode": "app-import",
+    "hint": "Recompilado desde tu disco de Xbox 360. El APK es pequeño: los datos los aporta tu copia.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "v0.1.1 temprana. Campaña/especial ops según el repo.",
+  "verification": {
+    "level": "apk",
+    "device": "Samsung Galaxy A56 5G (SM-A566E) · Android 16 · Exynos 1580 (s5e8855) · Xclipse 540 · arm64-v8a · 8 GB RAM",
+    "date": "2026-11-22",
+    "apk": "mw2-recomp-v0.1.1.apk",
+    "version": "0.1.1 (0ddd949)",
+    "sha256": "cac64d6d9d4143d7057ba1e8fa01b1d41a3f41d697201adcf329a7f4fa6020c2",
+    "package": "com.mw2.recomp",
+    "min_sdk": 26,
+    "native_code": "arm64-v8a",
+    "release": "v0.1.1",
+    "note": "APK descargado, integridad y metadatos comprobados. No se probó el arranque del juego (faltan datos en este dispositivo)."
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "gta5",
+  "name": "Grand Theft Auto V (port no oficial)",
+  "source": "PC/Xbox 360 (tu copia)",
+  "repo": "WALID1618Y/GTA-V-android-PORT",
+  "asset": "GTA_V",
+  "asset_exclude": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 30,
+  "data": {
+    "mode": "app-import",
+    "hint": "Port no oficial de la comunidad. La app espera los datos del juego; revisa el repo antes de instalar.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "APK grande (~287 MB). Proyecto de terceros sin documentación clara: úsalo bajo tu cuenta y riesgo."
+}

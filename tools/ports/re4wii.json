@@ -1,0 +1,32 @@
+{
+  "id": "re4wii",
+  "name": "Resident Evil 4 (Wii Edition)",
+  "source": "Wii (tu ISO RB4E08)",
+  "repo": "PotatoRecomp/RE4Wii-Android",
+  "asset": "arm64",
+  "asset_exclude": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 8,
+  "data": {
+    "mode": "app-import",
+    "hint": "Recompilación estática de la versión Wii (RB4E08). Copia tu ISO al teléfono y elígela en la app.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "No es emulador: PowerPC recompilado a C++. Necesita exactamente la revisión RB4E08.",
+  "verification": {
+    "level": "apk",
+    "device": "Samsung Galaxy A56 5G (SM-A566E) · Android 16 · Exynos 1580 (s5e8855) · Xclipse 540 · arm64-v8a · 8 GB RAM",
+    "date": "2026-11-22",
+    "apk": "re4wii-1.1-android-arm64.apk",
+    "version": "1.1",
+    "sha256": "4c9f27fca042130da38b3fae5599ffce9f8b04eafcf734c1c13b661e88b73817",
+    "package": "com.shiinobu.re4",
+    "min_sdk": 29,
+    "native_code": "arm64-v8a",
+    "release": "v1.1",
+    "note": "APK descargado, integridad y metadatos comprobados. No se probó el arranque del juego (faltan datos en este dispositivo)."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "fifastreet12",
+  "name": "FIFA Street (2012)",
+  "source": "Xbox 360 (tu copia)",
+  "repo": "dzakyraf/fifastreet2012-recomp",
+  "asset": ".apk",
+  "asset_exclude": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 8,
+  "data": {
+    "mode": "app-import",
+    "hint": "Recompilación de FIFA Street 2012. Importa tu copia de Xbox 360 desde la app.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "v0.1.0 experimental. No existe port nativo de FIFA 09-23 (ver docs/07).",
+  "verification": {
+    "level": "apk",
+    "device": "Samsung Galaxy A56 5G (SM-A566E) · Android 16 · Exynos 1580 (s5e8855) · Xclipse 540 · arm64-v8a · 8 GB RAM",
+    "date": "2026-11-22",
+    "apk": "fifastreet-recomp-0.1.0.apk",
+    "version": "0.1.0 (bf1f23f)",
+    "sha256": "696499d3be1aef0de1e9ead9122ea66a5d62e01aa811787ba69f781def5bcb6f",
+    "package": "com.fifastreet.recomp",
+    "min_sdk": 26,
+    "native_code": "arm64-v8a",
+    "release": "0.1.0",
+    "note": "APK descargado, integridad y metadatos comprobados. No se probó el arranque del juego (faltan datos en este dispositivo)."
+  }
+}

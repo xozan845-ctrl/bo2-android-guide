@@ -9,7 +9,6 @@
   "arch": "arm64",
   "min_android": 10,
   "space_gb": 14,
-  "verified": false,
   "data": {
     "mode": "app-import",
     "hint": "APK experimental adjunto a cada release. Necesitas los archivos de tu copia.",
@@ -17,5 +16,18 @@
     "layout": [],
     "verify": null
   },
-  "notes": "Publica .sha256 del APK: se verifica automáticamente."
+  "notes": "Publica .sha256 del APK: se verifica automáticamente.",
+  "verification": {
+    "level": "apk",
+    "device": "Samsung Galaxy A56 5G (SM-A566E) · Android 16 · Exynos 1580 (s5e8855) · Xclipse 540 · arm64-v8a · 8 GB RAM",
+    "date": "2026-11-22",
+    "apk": "gow2-recomp-0.4.7-android-arm64.apk",
+    "version": "0.4.7",
+    "sha256": "079749ec8ef87668c50f16c0fd8f5a71d88e9f165dd3f23f71d64c2493fc0a69",
+    "package": "com.santiquiroz.gow2recomp",
+    "min_sdk": 29,
+    "native_code": "arm64-v8a",
+    "release": "v0.4.7",
+    "note": "APK descargado, integridad y metadatos comprobados. No se probó el arranque del juego (faltan datos en este dispositivo)."
+  }
 }

@@ -18,6 +18,7 @@ Nada de datos del juego se descarga si no los aportas tú (--url/--lista).
 """
 
 import argparse
+import datetime
 import hashlib
 import json
 import os
@@ -75,6 +76,54 @@ def human(n):
 
 def which(name):
     return shutil.which(name)
+
+
+def device_string():
+    def gp(key):
+        try:
+            r = subprocess.run(["getprop", key], capture_output=True, text=True, timeout=5)
+            return r.stdout.strip()
+        except Exception:
+            return ""
+    brand = gp("ro.product.brand")
+    model = gp("ro.product.model")
+    soc = gp("ro.soc.model") or gp("ro.hardware")
+    ver = gp("ro.build.version.release")
+    abi = gp("ro.product.cpu.abi")
+    dev = ("%s %s" % (brand, model)).strip() if brand else model
+    parts = [x for x in (dev, ("Android " + ver) if ver else "", soc, abi) if x]
+    return " · ".join(parts) if parts else "desconocido"
+
+
+def inspect_apk(path):
+    info = {"file": os.path.basename(path), "bytes": os.path.getsize(path)}
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    info["sha256"] = h.hexdigest()
+    if not which("aapt"):
+        return info
+    r = subprocess.run(["aapt", "dump", "badging", path], capture_output=True, text=True)
+    for line in (r.stdout or "").splitlines():
+        if line.startswith("package:"):
+            m = re.search(r"name='([^']+)'", line)
+            if m:
+                info["package"] = m.group(1)
+            m = re.search(r"versionName='([^']+)'", line)
+            if m:
+                info["version"] = m.group(1)
+        elif line.startswith("sdkVersion:"):
+            m = re.search(r"(\d+)", line)
+            if m:
+                info["min_sdk"] = int(m.group(1))
+        elif line.startswith("targetSdkVersion:"):
+            m = re.search(r"(\d+)", line)
+            if m:
+                info["target_sdk"] = int(m.group(1))
+        elif line.startswith("native-code:"):
+            info["native_code"] = line.split(":", 1)[1].strip().strip("'")
+    return info
 
 
 # ----------------------------------------------------------------- manifiestos
@@ -356,13 +405,29 @@ def install_apk(apk_path, force_open=False):
 
 
 # --------------------------------------------------------------------- comandos
+LEVEL_LABEL = {
+    "jugado": "jugado en dispositivo",
+    "datos": "datos + APK validados",
+    "apk": "APK verificado",
+    "": "sin verificar",
+}
+
+
+def level_of(m):
+    v = m.get("verification") or {}
+    lvl = v.get("level", "")
+    if not lvl and m.get("verified"):
+        lvl = "datos"
+    return LEVEL_LABEL.get(lvl, lvl)
+
+
 def cmd_list(_args):
     rows = all_manifests()
     print("%sPorts disponibles (%d)%s\n" % (C["b"], len(rows), C["n"]))
-    print("  %-11s %-38s %-22s %s" % ("ID", "JUEGO", "ORIGEN", "ESTADO"))
+    print("  %-13s %-36s %-20s %s" % ("ID", "JUEGO", "ORIGEN", "VERIFICACIÓN"))
     for m in rows:
-        state = "verificado" if m.get("verified") else "sin probar"
-        print("  %-11s %-38s %-22s %s" % (m["id"], m["name"][:38], m.get("source", "")[:22], state))
+        state = level_of(m)
+        print("  %-13s %-36s %-20s %s" % (m["id"], m["name"][:36], m.get("source", "")[:20], state))
     print("\nDetalle:  python3 tools/port.py info <id>")
     print("Instalar: python3 tools/port.py install <id>")
 
@@ -379,8 +444,23 @@ def cmd_info(args):
         for r in m["data"]["layout"]:
             print("    - %-34s %s" % (r["path"], r.get("desc", "")))
     print("  Notas         : %s" % m.get("notes", ""))
-    if not m.get("verified"):
-        print("  %sEste port no está probado por este instalador: revisa su README.%s" % (C["y"], C["n"]))
+    v = m.get("verification") or {}
+    if v.get("level"):
+        print("  Verificación  : %s" % LEVEL_LABEL.get(v["level"], v["level"]))
+        if v.get("device"):
+            print("  Dispositivo   : %s" % v["device"])
+        if v.get("date"):
+            print("  Fecha         : %s" % v["date"])
+        if v.get("apk"):
+            print("  APK probado   : %s (%s)" % (v["apk"], v.get("version", "?")))
+        if v.get("sha256"):
+            print("  SHA-256       : %s" % v["sha256"][:32] + "…")
+        if v.get("package"):
+            print("  Paquete       : %s · minSdk %s" % (v["package"], v.get("min_sdk", "?")))
+        if v.get("note"):
+            print("  Nota          : %s" % v["note"])
+    else:
+        print("  %sSin verificar por este instalador: revisa el README del proyecto.%s" % (C["y"], C["n"]))
 
 
 def cmd_verify(args):
@@ -557,6 +637,123 @@ def cmd_install(args):
     return 0
 
 
+def save_manifest(m):
+    m = {k: v for k, v in m.items() if not k.startswith("_")}
+    with open(os.path.join(PORTS_DIR, m["id"] + ".json"), "w", encoding="utf-8") as f:
+        json.dump(m, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+
+
+def cmd_probar(args):
+    m = load_manifest(args.port)
+    step("Probando APK de %s" % m["name"])
+    rel = latest_release(m["repo"])
+    asset = pick_asset(rel, m.get("asset", ""), m.get("asset_exclude", ""))
+    if not asset:
+        die("el release %s no trae APK" % rel.get("tag_name"))
+    print("     %s · %s" % (rel.get("tag_name"), asset["name"]))
+    dest = os.path.join(args.dir_descargas or SRC_DIRS[0], asset["name"])
+    try:
+        apk = download(asset["browser_download_url"], dest)
+    except Exception as e:
+        die(str(e))
+
+    chk = verify_checksums(apk, rel)
+    if chk is True:
+        ok("SHA-256 coincide con el release")
+    elif chk is False:
+        die("SHA-256 no coincide")
+
+    info = inspect_apk(apk)
+    if "package" not in info:
+        warn("instala 'pkg install aapt' para extraer paquete/minSdk")
+    for k, label in (("package", "paquete"), ("version", "versión"), ("min_sdk", "minSdk"),
+                     ("target_sdk", "targetSdk"), ("native_code", "ABI"), ("sha256", "SHA-256")):
+        if info.get(k) is not None:
+            print("     %-9s %s" % (label, info[k]))
+    print("     %-9s %s" % ("tamaño", human(info["bytes"])))
+
+    v = {
+        "level": "apk",
+        "device": args.dispositivo or device_string(),
+        "date": datetime.date.today().isoformat(),
+        "apk": info["file"],
+        "version": info.get("version", rel.get("tag_name", "")),
+        "sha256": info["sha256"],
+        "package": info.get("package", ""),
+        "min_sdk": info.get("min_sdk"),
+        "native_code": info.get("native_code", ""),
+        "release": rel.get("tag_name", ""),
+        "note": args.nota or "APK descargado, integridad y metadatos comprobados. No se probó el arranque del juego.",
+    }
+    m["verification"] = v
+    m.pop("verified", None)
+    save_manifest(m)
+    ok("manifiesto actualizado: tools/ports/%s.json" % m["id"])
+    return 0
+
+
+def parse_repo_url(url):
+    url = url.strip().rstrip("/")
+    url = re.sub(r"\.git$", "", url)
+    m = re.search(r"github\.com[/:]([^/]+)/([^/?#]+)", url)
+    if m:
+        return m.group(1) + "/" + m.group(2)
+    if re.match(r"^[\w.-]+/[\w.-]+$", url):
+        return url
+    die("no entiendo el repo: %s (usa https://github.com/usuario/repo)" % url)
+
+
+def cmd_nuevo(args):
+    repo = parse_repo_url(args.repo)
+    step("Analizando %s" % repo)
+    try:
+        meta = json.loads(http_get("https://api.github.com/repos/%s" % repo).decode())
+        rel = latest_release(repo)
+    except Exception as e:
+        die(str(e))
+    apk = pick_asset(rel, args.asset or "", args.excluir or "")
+    if not apk:
+        warn("el último release (%s) no trae APK; ajusta 'asset' cuando lo haya" % rel.get("tag_name"))
+    pid = args.id or re.sub(r"[^a-z0-9]+", "-", repo.split("/")[1].lower()).strip("-")[:20]
+    out = os.path.join(PORTS_DIR, pid + ".json")
+    if os.path.exists(out) and not args.forzar:
+        die("ya existe tools/ports/%s.json (usa --forzar)" % pid)
+
+    low = (apk["name"].lower() if apk else "")
+    pattern = "arm64" if "arm64" in low else ("armv8" if "armv8" in low else ".apk")
+    data = {
+        "id": pid,
+        "name": args.nombre or meta.get("name") or pid,
+        "source": args.origen or "tu propia copia",
+        "repo": repo,
+        "asset": args.asset or pattern,
+        "asset_exclude": args.excluir or "",
+        "arch": "arm64",
+        "min_android": args.min_android,
+        "space_gb": args.espacio,
+        "data": {
+            "mode": args.modo,
+            "hint": args.pista or "La app importa tu copia del juego desde su menú.",
+            "dest": args.datos or "",
+            "layout": [],
+            "verify": None,
+        },
+        "notes": (meta.get("description") or "")[:180],
+    }
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+    ok("manifiesto creado: tools/ports/%s.json" % pid)
+    print("     release: %s · APK: %s" % (rel.get("tag_name"), apk["name"] if apk else "—"))
+    print("     revísalo con: python3 tools/port.py info %s" % pid)
+    print("     verifícalo con: python3 tools/port.py probar %s" % pid)
+    if args.probar:
+        args.port = pid
+        return cmd_probar(args)
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description="Instalador universal de ports nativos Android")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -572,6 +769,32 @@ def main():
     p.add_argument("port")
     p.add_argument("dir")
     p.set_defaults(fn=cmd_verify)
+
+    p = sub.add_parser("probar", help="descarga el APK, lo inspecciona y marca el manifiesto")
+    p.add_argument("port")
+    p.add_argument("--dir-descargas", default="")
+    p.add_argument("--dispositivo", default="", help="texto libre para el dispositivo")
+    p.add_argument("--nota", default="")
+    p.set_defaults(fn=cmd_probar)
+
+    p = sub.add_parser("nuevo", help="crea un manifiesto a partir de la URL de un repo")
+    p.add_argument("repo", help="https://github.com/usuario/repo")
+    p.add_argument("--id", default="")
+    p.add_argument("--nombre", default="")
+    p.add_argument("--origen", default="")
+    p.add_argument("--modo", default="app-import", choices=["app-import", "folder", "iso", "app-download"])
+    p.add_argument("--pista", default="")
+    p.add_argument("--datos", default="", help="carpeta destino (modo folder)")
+    p.add_argument("--espacio", type=float, default=10, help="GB libres recomendados")
+    p.add_argument("--min-android", type=int, default=10, dest="min_android")
+    p.add_argument("--asset", default="", help="subcadena para elegir el APK")
+    p.add_argument("--excluir", default="", help="subcadena a excluir del APK")
+    p.add_argument("--probar", action="store_true", help="además descarga y verifica el APK")
+    p.add_argument("--forzar", action="store_true")
+    p.add_argument("--dir-descargas", default="")
+    p.add_argument("--dispositivo", default="")
+    p.add_argument("--nota", default="")
+    p.set_defaults(fn=cmd_nuevo)
 
     p = sub.add_parser("install", help="instala un port (APK + datos)")
     p.add_argument("port")

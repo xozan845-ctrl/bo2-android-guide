@@ -1,0 +1,32 @@
+{
+  "id": "mw3",
+  "name": "Call of Duty: Modern Warfare 3 (2011)",
+  "source": "Xbox 360 (tu disco)",
+  "repo": "yassinsolim/mw3-recomp",
+  "asset": ".apk",
+  "asset_exclude": "",
+  "arch": "arm64",
+  "min_android": 10,
+  "space_gb": 16,
+  "data": {
+    "mode": "app-import",
+    "hint": "Recompilado desde tu disco de Xbox 360. Necesitas los archivos del juego en el teléfono.",
+    "dest": "",
+    "layout": [],
+    "verify": null
+  },
+  "notes": "v0.1.1 temprana.",
+  "verification": {
+    "level": "apk",
+    "device": "Samsung Galaxy A56 5G (SM-A566E) · Android 16 · Exynos 1580 (s5e8855) · Xclipse 540 · arm64-v8a · 8 GB RAM",
+    "date": "2026-11-22",
+    "apk": "mw3-recomp-v0.1.1.apk",
+    "version": "0.1.1 (0cb8639)",
+    "sha256": "14bc417010f8facd8a673b7d04392e0c3de229d860aac9565e0dec85643bb1fe",
+    "package": "com.mw3.recomp",
+    "min_sdk": 26,
+    "native_code": "arm64-v8a",
+    "release": "v0.1.1",
+    "note": "APK descargado, integridad y metadatos comprobados. No se probó el arranque del juego (faltan datos en este dispositivo)."
+  }
+}
