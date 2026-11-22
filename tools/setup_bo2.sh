@@ -14,6 +14,7 @@
 #   bash tools/setup_bo2.sh                       # todo automático
 #   bash tools/setup_bo2.sh --yes                 # sin preguntas (no abre el instalador)
 #   bash tools/setup_bo2.sh --instalar            # abre el instalador del APK al final
+#   bash tools/setup_bo2.sh --pedir-enlaces       # pide los enlaces al ejecutar
 #   bash tools/setup_bo2.sh --lista enlaces.txt   # descarga tus enlaces (1 por línea)
 #   bash tools/setup_bo2.sh --url URL1 --url URL2 # enlaces sueltos (MediaFire/Directo)
 #   bash tools/setup_bo2.sh --descargar-apk       # baja el APK oficial del port
@@ -51,6 +52,7 @@ LISTA=""
 DL_DIR=""
 DOWNLOAD_APK=1
 OPEN_INSTALLER=0
+PEDIR=0
 APK_REPO="spartansprm/BO2-Android-xbox360"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -93,6 +95,7 @@ while [ $# -gt 0 ]; do
     --dir-descargas) DL_DIR="${2:?falta ruta}"; shift 2 ;;
     --descargar-apk) DOWNLOAD_APK=1; shift ;;
     --instalar)  OPEN_INSTALLER=1; shift ;;
+    --pedir-enlaces) PEDIR=1; shift ;;
     --force|-f)  FORCE=1; shift ;;
     --yes|-y)    ASSUME_YES=1; shift ;;
     --no-apk)    DO_APK=0; DOWNLOAD_APK=0; shift ;;
@@ -231,6 +234,21 @@ if [ "$TREE_OK" -eq 1 ] && [ "$FORCE" -eq 0 ]; then
   step "Ya existe una instalación en $TITLE"
   ok "no hace falta extraer (usa --force para re-extraer)"
 else
+  # pedir enlaces al vuelo (así el repo queda sin enlaces y cualquiera puede usarlo)
+  if [ "$PEDIR" -eq 1 ] && [ ${#URLS[@]} -eq 0 ]; then
+    step "Pega tus enlaces (uno por línea, Enter vacío para terminar)"
+    if [ -r /dev/tty ]; then
+      while IFS= read -r linea </dev/tty; do
+        linea="${linea%$'\r'}"
+        [ -z "$linea" ] && break
+        URLS+=("$linea")
+      done
+      ok "${#URLS[@]} enlace(s) recibido(s)"
+    else
+      warn "no hay terminal interactiva; usa --lista o --url"
+    fi
+  fi
+
   if [ ${#URLS[@]} -gt 0 ]; then
     descargar_lista || warn "hubo descargas fallidas; continúo con lo que ya esté en disco"
     SRC_DIRS=("$DL_DIR" "${SRC_DIRS[@]}")

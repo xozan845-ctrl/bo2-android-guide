@@ -24,6 +24,9 @@ bash tools/setup_bo2.sh
 
 # opción B: que además los descargue de tus enlaces
 bash tools/setup_bo2.sh --lista enlaces.txt
+
+# opción C: sin editar archivos, te los pide al ejecutar
+bash tools/setup_bo2.sh --pedir-enlaces
 ```
 
 `enlaces.txt` = un enlace por línea (MediaFire, Google Drive directo, HTTP…). Parte de `enlaces.txt.example`:
@@ -60,6 +63,7 @@ bash tools/setup_bo2.sh --force                    # re-extraer aunque ya exista
 bash tools/setup_bo2.sh --no-apk                   # sin APK
 bash tools/setup_bo2.sh --yes                      # sin preguntas (no abre el instalador)
 bash tools/setup_bo2.sh --instalar                 # abre el instalador del APK
+bash tools/setup_bo2.sh --pedir-enlaces            # pide los enlaces al ejecutar
 ```
 
 ---
