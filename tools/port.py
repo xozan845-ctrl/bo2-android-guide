@@ -754,6 +754,38 @@ def cmd_nuevo(args):
     return 0
 
 
+def cmd_lanzar(args):
+    m = load_manifest(args.port)
+    pkg = (m.get("verification") or {}).get("package") or m.get("package")
+    if not pkg:
+        die("no conozco el paquete de %s; ejecuta antes: python3 tools/port.py probar %s" % (m["id"], m["id"]))
+    installed = False
+    if which("pm"):
+        r = subprocess.run(["pm", "list", "packages", pkg], capture_output=True, text=True)
+        installed = ("package:" + pkg) in (r.stdout or "")
+    if not installed:
+        warn("%s no está instalado (%s)" % (m["name"], pkg))
+        print("     instálalo con: python3 tools/port.py install %s --instalar" % m["id"])
+        return 1
+    ok("instalado: %s" % pkg)
+    if m["data"].get("mode") in ("folder", "iso"):
+        print("     datos: %s" % (m["data"].get("dest") or m["data"].get("hint")))
+    if which("monkey"):
+        r = subprocess.run(["monkey", "-p", pkg, "-c", "android.intent.category.LAUNCHER", "1"],
+                           capture_output=True, text=True)
+        if "No activities found" not in (r.stdout or "") and r.returncode == 0:
+            ok("lanzado: %s" % m["name"])
+            return 0
+    if which("am"):
+        r = subprocess.run(["am", "start", "-a", "android.intent.action.MAIN",
+                            "-c", "android.intent.category.LAUNCHER", pkg], capture_output=True, text=True)
+        if r.returncode == 0:
+            ok("lanzado")
+            return 0
+    warn("no pude lanzarlo automáticamente: ábrelo desde el cajón de apps")
+    return 1
+
+
 def main():
     ap = argparse.ArgumentParser(description="Instalador universal de ports nativos Android")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -795,6 +827,10 @@ def main():
     p.add_argument("--dispositivo", default="")
     p.add_argument("--nota", default="")
     p.set_defaults(fn=cmd_nuevo)
+
+    p = sub.add_parser("lanzar", help="abre el juego si está instalado")
+    p.add_argument("port")
+    p.set_defaults(fn=cmd_lanzar)
 
     p = sub.add_parser("install", help="instala un port (APK + datos)")
     p.add_argument("port")

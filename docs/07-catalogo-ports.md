@@ -126,6 +126,14 @@ python3 tools/port.py probar re4wii --dispositivo "Pixel 8 · Android 15 · Tens
 
 Si además pruebas el juego con tus datos, sube el nivel a `datos`/`jugado` editando `verification.level` y añadiendo una nota con FPS y ajustes.
 
+## Lanzar un juego instalado
+
+```bash
+python3 tools/port.py lanzar re4wii
+```
+
+Comprueba que el paquete esté instalado y lo abre (`monkey`/`am start`). Si el port está en modo `folder`, recuerda qué carpeta de datos debe elegir la app.
+
 ## Crear un manifiesto desde un repo
 
 ```bash
