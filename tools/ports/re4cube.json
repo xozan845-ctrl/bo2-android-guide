@@ -11,9 +11,14 @@
   "data": {
     "mode": "app-import",
     "hint": "Port nativo basado en la decompilación de RE4 de GameCube. Copia tu ISO y elígela en la app.",
-    "dest": "",
+    "dest": "/storage/emulated/0/Games/RE4GC",
     "layout": [],
     "verify": null
   },
-  "notes": "Build modificado de CubeEvil4 (Andiweli). Versión 0.0.1, muy temprana."
+  "notes": "Build modificado de CubeEvil4 (Andiweli). Versión 0.0.1, muy temprana.",
+  "disc_id": "G4BE08",
+  "disc_ext": [
+    ".iso",
+    ".rvz"
+  ]
 }

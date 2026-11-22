@@ -512,7 +512,7 @@ def cmd_install(args):
     print("  repo: https://github.com/%s" % m["repo"])
     print("  datos: %s" % data.get("hint", ""))
 
-    if not m.get("verified"):
+    if not (m.get("verification") or {}).get("level"):
         warn("port no verificado por este instalador; si algo falla, revisa su README")
 
     dl_dir = args.dir_descargas or args.src or SRC_DIRS[0]
@@ -754,6 +754,129 @@ def cmd_nuevo(args):
     return 0
 
 
+# ----------------------------------------------------------------- discos
+SCAN_ROOTS = [
+    "/storage/emulated/0/Games",
+    "/storage/emulated/0/Download",
+    "/storage/emulated/0/Documents",
+    "/storage/emulated/0/ROMs",
+    "/storage/emulated/0",
+    "/sdcard",
+]
+SKIP_DIRS = {"Android", "DCIM", ".thumbnails", "LOST.DIR", "Movies", "Music", "Pictures"}
+
+
+def read_disc_id(path):
+    """Devuelve (id, tipo) de un ISO de Wii/GC, o (None, motivo)."""
+    try:
+        with open(path, "rb") as f:
+            head = f.read(0x20)
+    except OSError as e:
+        return None, str(e)
+    if len(head) < 0x20:
+        return None, "archivo muy pequeño"
+    if head[0x18:0x1C] == b"\xc2\x33\x9f\x3d":
+        return head[0:6].decode("ascii", "replace"), "wii"
+    if head[0x1C:0x20] == b"\xc2\x33\x9f\x3d":
+        return head[0:6].decode("ascii", "replace"), "gamecube"
+    return None, "no es una imagen de disco Wii/GC"
+
+
+def scan_disc(expected_id, exts, roots=None, max_depth=4):
+    roots = roots or SCAN_ROOTS
+    exts = tuple(e.lower() for e in exts)
+    found, rejected, seen = [], [], set()
+    for root in roots:
+        if not os.path.isdir(root):
+            continue
+        root = os.path.abspath(root)
+        base_depth = root.rstrip("/").count("/")
+        for dirpath, dirnames, filenames in os.walk(root):
+            if dirpath.count("/") - base_depth >= max_depth:
+                dirnames[:] = []
+            dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS and not d.startswith(".")]
+            for name in filenames:
+                if not name.lower().endswith(exts):
+                    continue
+                path = os.path.join(dirpath, name)
+                if path in seen:
+                    continue
+                seen.add(path)
+                try:
+                    size = os.path.getsize(path)
+                except OSError:
+                    continue
+                if size < 100 * 1024 * 1024:
+                    continue
+                if name.lower().endswith(".rvz"):
+                    found.append((path, "?", size, "RVZ comprimido: no se puede leer el ID sin descomprimir"))
+                    continue
+                did, kind = read_disc_id(path)
+                if did is None:
+                    rejected.append((path, kind))
+                elif expected_id and did != expected_id:
+                    rejected.append((path, "ID %s (%s)" % (did, kind)))
+                else:
+                    found.append((path, did, size, kind))
+    return found, rejected
+
+
+def cmd_jugar(args):
+    m = load_manifest(args.port)
+    pkg = (m.get("verification") or {}).get("package") or m.get("package")
+    step("Jugar a %s" % m["name"])
+
+    # 1) APK instalado?
+    installed = False
+    if which("pm") and pkg:
+        r = subprocess.run(["pm", "list", "packages", pkg], capture_output=True, text=True)
+        installed = ("package:" + pkg) in (r.stdout or "")
+    if pkg and not installed:
+        warn("el APK no está instalado (%s)" % pkg)
+        print("     descargando e instalando…")
+        inst = argparse.Namespace(port=m["id"], datos="", url=[], lista="", pedir_enlaces=False,
+                                  dir_descargas=args.dir_descargas, solo_apk=True, forzar=False,
+                                  instalar=True, si=True, src="", sin_apk=False, borrar_archivos=False)
+        rc = cmd_install(inst)
+        if rc != 0:
+            return rc
+        print("\n     pulsa Instalar en la pantalla y vuelve a ejecutar:")
+        print("     python3 tools/port.py jugar %s" % m["id"])
+        return 0
+
+    # 2) datos del juego
+    disc_id = m.get("disc_id")
+    exts = m.get("disc_ext") or []
+    if disc_id and exts:
+        step("Buscando tu copia del juego (%s)" % disc_id)
+        roots = [args.datos] if args.datos else None
+        found, rejected = scan_disc(disc_id, exts, roots)
+        if found:
+            for path, did, size, kind in found:
+                ok("%s  (%s, %s)" % (path, human(size), kind))
+                if did == "?":
+                    print("     %s" % kind)
+            print("\n     elige ese archivo dentro de la app la primera vez.")
+        else:
+            warn("no encontré ninguna imagen de disco válida")
+            if rejected:
+                print("     descartados:")
+                for path, why in rejected[:5]:
+                    print("       - %s (%s)" % (path, why))
+            print("     copia tu ISO/RVZ a /storage/emulated/0/Games/%s/" % m["id"].upper())
+            print("     luego repite: python3 tools/port.py jugar %s" % m["id"])
+            return 1
+
+    # 3) lanzar
+    if which("monkey"):
+        subprocess.run(["monkey", "-p", pkg, "-c", "android.intent.category.LAUNCHER", "1"],
+                       capture_output=True, text=True)
+        ok("lanzado")
+        return 0
+    warn("ábrelo desde el cajón de apps")
+    return 1
+
+
 def cmd_lanzar(args):
     m = load_manifest(args.port)
     pkg = (m.get("verification") or {}).get("package") or m.get("package")
@@ -827,6 +950,12 @@ def main():
     p.add_argument("--dispositivo", default="")
     p.add_argument("--nota", default="")
     p.set_defaults(fn=cmd_nuevo)
+
+    p = sub.add_parser("jugar", help="todo en uno: instala si falta, busca el disco y lanza")
+    p.add_argument("port")
+    p.add_argument("--datos", default="", help="carpeta donde buscar el ISO")
+    p.add_argument("--dir-descargas", default="")
+    p.set_defaults(fn=cmd_jugar)
 
     p = sub.add_parser("lanzar", help="abre el juego si está instalado")
     p.add_argument("port")

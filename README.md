@@ -133,6 +133,7 @@ Verificación hecha en **Samsung Galaxy A56 5G (SM-A566E) · Android 16 · Exyno
 ```bash
 python3 tools/port.py probar gta4                        # verifica un APK y marca el manifiesto
 python3 tools/port.py lanzar re4wii                      # abre el juego si está instalado
+python3 tools/port.py jugar re4wii                       # todo en uno: instala, busca el ISO, lanza
 python3 tools/port.py nuevo https://github.com/user/repo  # genera el manifiesto desde el repo
 ```
 

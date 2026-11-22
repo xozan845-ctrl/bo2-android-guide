@@ -126,6 +126,29 @@ python3 tools/port.py probar re4wii --dispositivo "Pixel 8 · Android 15 · Tens
 
 Si además pruebas el juego con tus datos, sube el nivel a `datos`/`jugado` editando `verification.level` y añadiendo una nota con FPS y ajustes.
 
+## Jugar en un solo comando
+
+```bash
+python3 tools/port.py jugar re4wii
+```
+
+Qué hace:
+
+1. Si el APK no está instalado, lo descarga del release oficial y abre el instalador (Android exige **un toque** en "Instalar"; sin root/Shizuku no se puede evitar).
+2. Busca en el teléfono (`Games`, `Download`, `Documents`, `ROMs`, raíz) imágenes `.iso`/`.rvz` y **lee el ID del disco** para comprobar que es el correcto (`RB4E08` en RE4 Wii, `G4BE08` en RE4 GameCube).
+3. Descarta archivos con otro ID y te dice qué encontró.
+4. Lanza la app.
+
+Límites reales de la automatización en Android:
+
+| Paso | ¿Automatizable? |
+|---|---|
+| Descargar APK y verificar hash | sí |
+| Instalar APK | **no**: Android pide confirmación (1 toque) |
+| Detectar y validar el ISO | sí |
+| Elegir la carpeta/archivo dentro de la app (SAF) | **no**: el diálogo del sistema requiere 1 toque la primera vez |
+| Preparar shaders/primer arranque | lo hace la app sola |
+
 ## Lanzar un juego instalado
 
 ```bash
